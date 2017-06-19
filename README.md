@@ -4,13 +4,17 @@
 Je de labyrinthe sur Android utilisant les capteurs de l'appareil !
 
 ## Installation
-- Installer Android Studio (version 2.3+)
-- Installer les dépendances
+- Installer Android Studio (version 2.3+ recommandée).
+- Cloner le projet `git clone https://github.com/Gramatiik/sensor-maze.git`.
+- Ouvrir le projet sur Android Studio et installer les dépendances (voir la section Compatibilité).
+- Profitez !
 
 ## Compatibilité
 | Min SDK | Target SDK | Compile SDK | Android Studio |
 |:-------:|:----------:|:-----------:|:--------------:|
 |21       |26          |26           |2.3.3           |
+
+Fonctionne sur mobiles et tablettes, la tuile s'adapte à la taille de l'écran.
 
 ## Fonctionnalités
 
@@ -24,7 +28,15 @@ Je de labyrinthe sur Android utilisant les capteurs de l'appareil !
 ![ScreenShot 2](assets/screen_2.png)  
 ![ScreenShot 3](assets/screen_3.png)
 
-
+## TODO et idées
+- Ajouter un menu principal.
+- Permettre de choisir son niveau.
+- Possibilité de créer ses niveaux.
+- Page d'options :
+    - Taille de la boule.
+    - Accélération de la boule.
+    - Vitesse de la boule.
+    
 ## Licence
 
 [MIT](LICENCE.md)
