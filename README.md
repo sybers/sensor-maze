@@ -4,10 +4,13 @@
 Je de labyrinthe sur Android utilisant les capteurs de l'appareil !
 
 ## Installation
+- Installer Android Studio (version 2.3+)
+- Installer les dépendances
 
-Version android : 5.0+
-
-1. Compilez l'APK à l'aide d'Android Studio
+## Versions
+| Min SDK | Target SDK | Compile SDK | Android Studio |
+|:-------:|:----------:|:-----------:|:--------------:|
+|21       |26          |26           |2.3.3           |
 
 ## Fonctionnalités
 
