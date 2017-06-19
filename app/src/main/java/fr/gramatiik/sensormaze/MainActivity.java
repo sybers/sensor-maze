@@ -12,8 +12,6 @@ import fr.gramatiik.sensormaze.models.Bloc;
 import fr.gramatiik.sensormaze.models.Boule;
 
 public class MainActivity extends AppCompatActivity {
-    // Le moteur graphique du jeu
-    private MazeView mView = null;
     // Le moteur physique du jeu
     private MazeEngine mEngine = null;
 
@@ -21,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mView = new MazeView(this);
+        MazeView mView = new MazeView(this);
         setContentView(mView);
 
         mEngine = new MazeEngine(this, mView);

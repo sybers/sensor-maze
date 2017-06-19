@@ -1,5 +1,6 @@
 package fr.gramatiik.sensormaze.engines;
 
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
@@ -24,7 +25,7 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
         this.mBoule = pBoule;
     }
 
-    SurfaceHolder mSurfaceHolder;
+    final SurfaceHolder mSurfaceHolder;
     DrawingThread mThread;
 
     private int mBackColor = Color.CYAN;
@@ -109,7 +110,9 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
             try {
                 mThread.join();
                 retry = false;
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+                Log.e("MAZE_VIEW", e.getMessage());
+            }
         }
 
     }
@@ -136,7 +139,9 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
                 // Pour dessiner à 50 fps
                 try {
                     Thread.sleep(20);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                    Log.e("MAZE_VIEW", e.getMessage());
+                }
             }
         }
     }

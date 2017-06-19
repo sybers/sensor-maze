@@ -11,7 +11,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class MazeEngine {
             float x = pEvent.values[0];
             float y = pEvent.values[1];
 
-            if(mBoule == null) {
+            if(mBoule != null) {
                 // On met à jour les coordonnées de la boule
                 RectF hitBox = mBoule.putXAndY(x, y);
 
@@ -81,11 +80,11 @@ public class MazeEngine {
         public void onSensorChanged(SensorEvent event) {
             if(mBoule != null) {
                 // on calcule la couleur en fonction du magnétisme
-                float maxRange = event.sensor.getMaximumRange();
+                float maxRange = 50;
 
-                int r = (int)sensorRangeToColorComponent(event.values[0], 50);
-                int g = (int)sensorRangeToColorComponent(event.values[1], 50);
-                int b = (int)sensorRangeToColorComponent(event.values[2], 50);
+                int r = (int)sensorRangeToColorComponent(event.values[0], maxRange);
+                int g = (int)sensorRangeToColorComponent(event.values[1], maxRange);
+                int b = (int)sensorRangeToColorComponent(event.values[2], maxRange);
 
                 int c = Color.rgb(r, g, b);
                 // on applique la couleur à la boule
@@ -146,7 +145,7 @@ public class MazeEngine {
         // calculate screen sizes
         float tileSizeX = screenSizes.x / (float)20;
         float tileSizeY = screenSizes.y / (float)14;
-        mBlocks = new ArrayList<Bloc>();
+        mBlocks = new ArrayList<>();
         mBlocks.add(new Bloc(Bloc.Type.TROU, 0, 0, tileSizeX, tileSizeY));
         mBlocks.add(new Bloc(Bloc.Type.TROU, 0, 1, tileSizeX, tileSizeY));
         mBlocks.add(new Bloc(Bloc.Type.TROU, 0, 2, tileSizeX, tileSizeY));

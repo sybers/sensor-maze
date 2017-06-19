@@ -15,7 +15,7 @@ public class GameDialogFragment extends DialogFragment {
 
     public DialogInterface.OnClickListener mRestartCallback;
 
-    public enum DialogType { VICTORY_DIALOG, DEFEAT_DIALOG };
+    public enum DialogType { VICTORY_DIALOG, DEFEAT_DIALOG }
 
     private DialogType mDialogType;
 
