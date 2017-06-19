@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         mView = new MazeView(this);
         setContentView(mView);
 
-        mEngine = new MazeEngine(this);
+        mEngine = new MazeEngine(this, mView);
 
         Boule b = new Boule();
         mView.setBoule(b);

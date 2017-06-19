@@ -28,7 +28,13 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
     SurfaceHolder mSurfaceHolder;
     DrawingThread mThread;
 
+    private int mBackColor = Color.CYAN;
+    public void setBGColor(int color) {
+        mBackColor = color;
+    }
+
     private List<Bloc> mBlocks = null;
+
     public List<Bloc> getBlocks() {
         return mBlocks;
     }
@@ -54,7 +60,7 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onDraw(Canvas pCanvas) {
         // Dessiner le fond de l'écran en premier
-        pCanvas.drawColor(Color.CYAN);
+        pCanvas.drawColor(mBackColor);
         if(mBlocks != null) {
             // Dessiner tous les blocs du labyrinthe
             for(Bloc b : mBlocks) {

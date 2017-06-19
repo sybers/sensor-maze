@@ -29,20 +29,21 @@ public class MazeEngine {
     private List<Bloc> mBlocks = null;
 
     private MainActivity mActivity = null;
+    private MazeView mViewEngine = null;
 
     private SensorManager mManager = null;
     private Sensor mAccelerometre = null;
     private Sensor mMagneticSensor = null;
     private Sensor mLightSensor = null;
 
-    SensorEventListener mAccelerometerSensorEventListener = new SensorEventListener() {
+    private SensorEventListener mAccelerometerSensorEventListener = new SensorEventListener() {
 
         @Override
         public void onSensorChanged(SensorEvent pEvent) {
             float x = pEvent.values[0];
             float y = pEvent.values[1];
 
-            if(mBoule != null) {
+            if(mBoule == null) {
                 // On met à jour les coordonnées de la boule
                 RectF hitBox = mBoule.putXAndY(x, y);
 
@@ -74,7 +75,7 @@ public class MazeEngine {
         public void onAccuracyChanged(Sensor pSensor, int pAccuracy) {}
     };
 
-    SensorEventListener mMagneticSensorEventListener = new SensorEventListener() {
+    private SensorEventListener mMagneticSensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if(mBoule != null) {
@@ -95,10 +96,11 @@ public class MazeEngine {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
-    SensorEventListener mLightSensorEventListener = new SensorEventListener() {
+    private SensorEventListener mLightSensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
-
+            int colorComponent = 255 - (int)event.values[2];
+            mViewEngine.setBGColor(Color.rgb(colorComponent, colorComponent, colorComponent));
         }
 
         @Override
@@ -110,8 +112,9 @@ public class MazeEngine {
         return (Math.abs(value)*255)/maxValue;
     }
 
-    public MazeEngine(MainActivity pView) {
+    public MazeEngine(MainActivity pView, MazeView mazeView) {
         mActivity = pView;
+        mViewEngine = mazeView;
         mManager = (SensorManager) mActivity.getBaseContext().getSystemService(Service.SENSOR_SERVICE);
         mAccelerometre = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagneticSensor = mManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
