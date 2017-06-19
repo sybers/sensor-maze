@@ -4,11 +4,13 @@ import fr.gramatiik.sensormaze.MainActivity;
 import fr.gramatiik.sensormaze.models.Bloc;
 import fr.gramatiik.sensormaze.models.Boule;
 import android.app.Service;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,10 @@ public class MazeEngine {
 
     private SensorManager mManager = null;
     private Sensor mAccelerometre = null;
+    private Sensor mMagneticSensor = null;
+    private Sensor mLightSensor = null;
 
-    SensorEventListener mSensorEventListener = new SensorEventListener() {
+    SensorEventListener mAccelerometerSensorEventListener = new SensorEventListener() {
 
         @Override
         public void onSensorChanged(SensorEvent pEvent) {
@@ -67,15 +71,51 @@ public class MazeEngine {
         }
 
         @Override
-        public void onAccuracyChanged(Sensor pSensor, int pAccuracy) {
+        public void onAccuracyChanged(Sensor pSensor, int pAccuracy) {}
+    };
+
+    SensorEventListener mMagneticSensorEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if(mBoule != null) {
+                // on calcule la couleur en fonction du magnétisme
+                float maxRange = event.sensor.getMaximumRange();
+
+                int r = (int)sensorRangeToColorComponent(event.values[0], 50);
+                int g = (int)sensorRangeToColorComponent(event.values[1], 50);
+                int b = (int)sensorRangeToColorComponent(event.values[2], 50);
+
+                int c = Color.rgb(r, g, b);
+                // on applique la couleur à la boule
+                mBoule.setCouleur(c);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    };
+
+    SensorEventListener mLightSensorEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
 
         }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
+
+    private float sensorRangeToColorComponent(float value, float maxValue) {
+        if(value > maxValue) value = maxValue;
+        return (Math.abs(value)*255)/maxValue;
+    }
 
     public MazeEngine(MainActivity pView) {
         mActivity = pView;
         mManager = (SensorManager) mActivity.getBaseContext().getSystemService(Service.SENSOR_SERVICE);
         mAccelerometre = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagneticSensor = mManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mLightSensor = mManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     }
 
     // Remet à zéro l'emplacement de la boule
@@ -85,12 +125,16 @@ public class MazeEngine {
 
     // Arrête le capteur
     public void stop() {
-        mManager.unregisterListener(mSensorEventListener, mAccelerometre);
+        mManager.unregisterListener(mAccelerometerSensorEventListener, mAccelerometre);
+        mManager.unregisterListener(mMagneticSensorEventListener, mMagneticSensor);
+        mManager.unregisterListener(mLightSensorEventListener, mLightSensor);
     }
 
     // Redémarre le capteur
     public void resume() {
-        mManager.registerListener(mSensorEventListener, mAccelerometre, SensorManager.SENSOR_DELAY_GAME);
+        mManager.registerListener(mAccelerometerSensorEventListener, mAccelerometre, SensorManager.SENSOR_DELAY_GAME);
+        mManager.registerListener(mMagneticSensorEventListener, mMagneticSensor, SensorManager.SENSOR_DELAY_GAME);
+        mManager.registerListener(mLightSensorEventListener, mLightSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     // Construit le labyrinthe

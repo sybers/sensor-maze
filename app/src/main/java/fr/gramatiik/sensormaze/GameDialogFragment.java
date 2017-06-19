@@ -17,24 +17,22 @@ public class GameDialogFragment extends DialogFragment {
 
     public enum DialogType { VICTORY_DIALOG, DEFEAT_DIALOG };
 
-    static public GameDialogFragment newInstance(DialogType type, DialogInterface.OnClickListener callback) {
+    private DialogType mDialogType;
 
-        Bundle args = new Bundle();
-        args.putSerializable("type", type);
+    static public GameDialogFragment newInstance(DialogType type, DialogInterface.OnClickListener callback) {
         GameDialogFragment fragment = new GameDialogFragment();
-        fragment.setArguments(args);
+        fragment.setType(type);
         fragment.mRestartCallback = callback;
         return fragment;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
-        DialogType type = (DialogType) bundle.get("type");
         String title = "", message = "";
 
-        if(type == null) throw new NullPointerException("Dialog type was not in bundle !");
+        if(mDialogType == null) throw new NullPointerException("Dialog type was not set!");
 
-        switch(type) {
+        switch(mDialogType) {
             case VICTORY_DIALOG:
                 title = "Victoire !";
                 message = "Bravo, vous avez gagné.";
@@ -50,6 +48,10 @@ public class GameDialogFragment extends DialogFragment {
                 .setMessage(message)
                 .setNeutralButton("Recommencer", this.mRestartCallback)
                 .create();
+    }
+
+    private void setType(DialogType type) {
+        this.mDialogType = type;
     }
 
 }

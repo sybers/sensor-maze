@@ -12,11 +12,6 @@ import fr.gramatiik.sensormaze.models.Bloc;
 import fr.gramatiik.sensormaze.models.Boule;
 
 public class MainActivity extends AppCompatActivity {
-    // Identifiant de la boîte de dialogue de victoire
-    public static final int VICTORY_DIALOG = 0;
-    // Identifiant de la boîte de dialogue de défaite
-    public static final int DEFEAT_DIALOG = 1;
-
     // Le moteur graphique du jeu
     private MazeView mView = null;
     // Le moteur physique du jeu

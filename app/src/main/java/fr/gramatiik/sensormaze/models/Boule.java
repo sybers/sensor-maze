@@ -5,12 +5,16 @@ import android.graphics.RectF;
 
 public class Boule {
     // Rayon de la boule
-    public static final int RAYON = 50;
+    public static final int RAYON = 30;
 
     // Couleur de la boule
     private int mCouleur = Color.GREEN;
     public int getCouleur() {
         return mCouleur;
+    }
+
+    public void setCouleur(int couleur) {
+        mCouleur = couleur;
     }
 
     // Vitesse maximale autorisée pour la boule
