@@ -5,7 +5,10 @@ import android.graphics.RectF;
 
 public class Boule {
     // Rayon de la boule
-    public static final int RAYON = 30;
+    private int mRayon = 30;
+    public int getRayon() {
+        return mRayon;
+    }
 
     // Couleur de la boule
     private int mCouleur = Color.GREEN;
@@ -32,8 +35,8 @@ public class Boule {
     // A partir du rectangle initial on détermine la position de la boule
     public void setInitialRectangle(RectF pInitialRectangle) {
         this.mInitialRectangle = pInitialRectangle;
-        this.mX = pInitialRectangle.left + RAYON;
-        this.mY = pInitialRectangle.top + RAYON;
+        this.mX = pInitialRectangle.left + mRayon;
+        this.mY = pInitialRectangle.top + mRayon;
     }
 
     // Le rectangle de collision
@@ -48,12 +51,12 @@ public class Boule {
         mX = pPosX;
 
         // Si la boule sort du cadre, on rebondit
-        if(mX < RAYON) {
-            mX = RAYON;
+        if(mX < mRayon) {
+            mX = mRayon;
             // Rebondir, c'est changer la direction de la balle
             mSpeedY = -mSpeedY / REBOND;
-        } else if(mX > mWidth - RAYON) {
-            mX = mWidth - RAYON;
+        } else if(mX > mWidth - mRayon) {
+            mX = mWidth - mRayon;
             mSpeedY = -mSpeedY / REBOND;
         }
     }
@@ -66,11 +69,11 @@ public class Boule {
 
     public void setPosY(float pPosY) {
         mY = pPosY;
-        if(mY < RAYON) {
-            mY = RAYON;
+        if(mY < mRayon) {
+            mY = mRayon;
             mSpeedX = -mSpeedX / REBOND;
-        } else if(mY > mHeight - RAYON) {
-            mY = mHeight - RAYON;
+        } else if(mY > mHeight - mRayon) {
+            mY = mHeight - mRayon;
             mSpeedX = -mSpeedX / REBOND;
         }
     }
@@ -101,7 +104,8 @@ public class Boule {
         this.mWidth = pWidth;
     }
 
-    public Boule() {
+    public Boule(int rayon) {
+        mRayon = rayon;
         mRectangle = new RectF();
     }
 
@@ -123,7 +127,7 @@ public class Boule {
         setPosY(mY + mSpeedX);
 
         // Met à jour les coordonnées du rectangle de collision
-        mRectangle.set(mX - RAYON, mY - RAYON, mX + RAYON, mY + RAYON);
+        mRectangle.set(mX - mRayon, mY - mRayon, mX + mRayon, mY + mRayon);
 
         return mRectangle;
     }
@@ -132,7 +136,7 @@ public class Boule {
     public void reset() {
         mSpeedX = 0;
         mSpeedY = 0;
-        this.mX = mInitialRectangle.left + RAYON;
-        this.mY = mInitialRectangle.top + RAYON;
+        this.mX = mInitialRectangle.left + mRayon;
+        this.mY = mInitialRectangle.top + mRayon;
     }
 }

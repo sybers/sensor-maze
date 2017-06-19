@@ -3,9 +3,17 @@ package fr.gramatiik.sensormaze.models;
 import android.graphics.RectF;
 
 public class Bloc {
-    public enum  Type { TROU, DEPART, ARRIVEE };
+    public enum  Type { TROU, DEPART, ARRIVEE }
 
-    private float SIZE = Boule.RAYON * 2;
+    private float mWidth;
+    public float getWidth () {
+        return mWidth;
+    }
+
+    private float mHeight;
+    public float getHeight () {
+        return mHeight;
+    }
 
     private Type mType = null;
     private RectF mRectangle = null;
@@ -18,8 +26,10 @@ public class Bloc {
         return mRectangle;
     }
 
-    public Bloc(Type pType, int pX, int pY) {
-        this.mType = pType;
-        this.mRectangle = new RectF(pX * SIZE, pY * SIZE, (pX + 1) * SIZE, (pY + 1) * SIZE);
+    public Bloc(Type pType, int pX, int pY, float width, float height) {
+        mWidth = width;
+        mHeight = height;
+        mType = pType;
+        mRectangle = new RectF(pX * mWidth, pY * mHeight, (pX + 1) * mWidth, (pY + 1) * mHeight);
     }
 }

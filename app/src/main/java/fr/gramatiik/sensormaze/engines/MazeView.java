@@ -1,6 +1,5 @@
 package fr.gramatiik.sensormaze.engines;
 
-import android.annotation.SuppressLint;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
@@ -54,7 +53,7 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.FILL);
 
-        mBoule = new Boule();
+        mBoule = new Boule(20);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
                         mPaint.setColor(Color.RED);
                         break;
                     case TROU:
-                        mPaint.setColor(Color.BLACK);
+                        mPaint.setColor(Color.DKGRAY);
                         break;
                 }
                 pCanvas.drawRect(b.getRectangle(), mPaint);
@@ -82,7 +81,7 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
         // Dessiner la boule
         if(mBoule != null) {
             mPaint.setColor(mBoule.getCouleur());
-            pCanvas.drawCircle(mBoule.getX(), mBoule.getY(), Boule.RAYON, mPaint);
+            pCanvas.drawCircle(mBoule.getX(), mBoule.getY(), mBoule.getRayon(), mPaint);
         }
     }
 

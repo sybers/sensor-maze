@@ -1,11 +1,11 @@
 package fr.gramatiik.sensormaze;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import java.util.List;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
+
 import fr.gramatiik.sensormaze.engines.MazeEngine;
 import fr.gramatiik.sensormaze.engines.MazeView;
 import fr.gramatiik.sensormaze.models.Bloc;
@@ -26,11 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine = new MazeEngine(this, mView);
 
-        Boule b = new Boule();
+        Boule b = new Boule(20);
         mView.setBoule(b);
         mEngine.setBoule(b);
 
-        List<Bloc> mList = mEngine.buildLabyrinthe();
+        Point screenSizes = new Point();
+        getWindowManager().getDefaultDisplay().getSize(screenSizes);
+
+        List<Bloc> mList = mEngine.buildLabyrinthe(screenSizes);
         mView.setBlocks(mList);
     }
 
