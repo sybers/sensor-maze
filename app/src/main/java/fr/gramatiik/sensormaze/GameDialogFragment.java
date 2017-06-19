@@ -7,34 +7,58 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 /**
- * @author Stanyslas Bres <stanyslas.bres@gmail.com>
- * @version 1.0.0
+ * Classe GameDialogFragement.
+ *
+ * Cette classe se charge d'afficher les dialogues de victoire ou de défaite du jeu.
+ *
+ * @author Stanyslas Bres.
  */
-
 public class GameDialogFragment extends DialogFragment {
 
+    /**
+     * Le callback à appeler lors de l'appuie du bouton "Recommencer".
+     */
     public DialogInterface.OnClickListener mRestartCallback;
 
-    public enum DialogType { VICTORY_DIALOG, DEFEAT_DIALOG };
+    /**
+     * Les différents types de dialogues disponibles.
+     */
+    enum DialogType { VICTORY_DIALOG, DEFEAT_DIALOG }
 
+    /**
+     * Le type de dialogue sélectionné.
+     */
+    private DialogType mDialogType;
+
+    /**
+     * Crée une nouvelle instance du Fragemnt.
+     *
+     * @param type Type de dialogue à générer.
+     * @param callback Callback pour le bouton "Recommencer"
+     *
+     * @return Nouvelle instance du Fragment.
+     */
     static public GameDialogFragment newInstance(DialogType type, DialogInterface.OnClickListener callback) {
-
-        Bundle args = new Bundle();
-        args.putSerializable("type", type);
         GameDialogFragment fragment = new GameDialogFragment();
-        fragment.setArguments(args);
+        fragment.setType(type);
         fragment.mRestartCallback = callback;
         return fragment;
     }
 
+    /**
+     * Lors de la création du dialogue, on affiche les données en fonction du type.
+     *
+     * @param bundle Bundle du Fragemtn.
+     *
+     * @return Instance du Dialog créé.
+     */
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
-        DialogType type = (DialogType) bundle.get("type");
         String title = "", message = "";
 
-        if(type == null) throw new NullPointerException("Dialog type was not in bundle !");
+        if(mDialogType == null) throw new NullPointerException("Dialog type was not set!");
 
-        switch(type) {
+        switch(mDialogType) {
             case VICTORY_DIALOG:
                 title = "Victoire !";
                 message = "Bravo, vous avez gagné.";
@@ -50,6 +74,15 @@ public class GameDialogFragment extends DialogFragment {
                 .setMessage(message)
                 .setNeutralButton("Recommencer", this.mRestartCallback)
                 .create();
+    }
+
+    /**
+     * Change le type de dialogue à afficher.
+     *
+     * @param type Nouveau type de dialogue.
+     */
+    private void setType(DialogType type) {
+        this.mDialogType = type;
     }
 
 }
