@@ -11,10 +11,25 @@ import fr.gramatiik.sensormaze.engines.MazeView;
 import fr.gramatiik.sensormaze.models.Bloc;
 import fr.gramatiik.sensormaze.models.Boule;
 
+/**
+ * Classe MainActivity.
+ *
+ * Instancie le jeu lors du démarrage de l'application.
+ *
+ * @author Stanyslas Bres.
+ */
 public class MainActivity extends AppCompatActivity {
-    // Le moteur physique du jeu
+    /**
+     * Le moteur physique du jeu
+     */
     private MazeEngine mEngine = null;
 
+    /**
+     * Lors de la création de l'activité, on ititialise
+     * les moteurs de jeux et toutes les dépendances.
+     *
+     * @param savedInstanceState État sauvegardé de l'application
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +50,18 @@ public class MainActivity extends AppCompatActivity {
         mView.setBlocks(mList);
     }
 
+    /**
+     * Pour reprendre le jeu.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         mEngine.resume();
     }
 
+    /**
+     * Pour mettre le jeu en pause.
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -48,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         mEngine.stop();
     }
 
+    /**
+     * Pour afficher le dialogue de victoire,
+     * permet de relancer le heu si l'on clique sur "Recommencer".
+     */
     public void showVictoryDialog() {
         mEngine.stop();
         GameDialogFragment.newInstance(GameDialogFragment.DialogType.VICTORY_DIALOG, new DialogInterface.OnClickListener() {
@@ -60,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
         }).show(getFragmentManager(), "GameDialog");
     }
 
+    /**
+     * Pour afficher le dialogue de défaite,
+     * permet de relancer le heu si l'on clique sur "Recommencer".
+     */
     public void showDefeatDialog() {
         mEngine.stop();
         GameDialogFragment.newInstance(GameDialogFragment.DialogType.DEFEAT_DIALOG, new DialogInterface.OnClickListener() {

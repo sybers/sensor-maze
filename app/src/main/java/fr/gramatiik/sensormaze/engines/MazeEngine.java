@@ -15,17 +15,20 @@ import android.hardware.SensorManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe MazeEngine.
+ *
+ * Cette classe gère la partie physique du jeu SensorMaze.
+ * Elle prend également en charge les différents capteur utilisés et
+ * met à jour les valeurs qui en dépendent.
+ *
+ * Le moteur se charge également de créer les blocs et la boule via une fonction statique.
+ *
+ * @author Stanyslas Bres
+ */
 public class MazeEngine {
     private Boule mBoule = null;
-    public Boule getBoule() {
-        return mBoule;
-    }
 
-    public void setBoule(Boule pBoule) {
-        this.mBoule = pBoule;
-    }
-
-    // Le labyrinthe
     private List<Bloc> mBlocks = null;
 
     private MainActivity mActivity = null;
@@ -36,6 +39,9 @@ public class MazeEngine {
     private Sensor mMagneticSensor = null;
     private Sensor mLightSensor = null;
 
+    /**
+     * Listener attaché à l'accéléromètre, gère le déplacement de la boule.
+     */
     private SensorEventListener mAccelerometerSensorEventListener = new SensorEventListener() {
 
         @Override
@@ -75,6 +81,9 @@ public class MazeEngine {
         public void onAccuracyChanged(Sensor pSensor, int pAccuracy) {}
     };
 
+    /**
+     * Listener attaché au capteur magnétique, gère le changement de couleur de la boule.
+     */
     private SensorEventListener mMagneticSensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
@@ -96,6 +105,9 @@ public class MazeEngine {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
+    /**
+     * Listener attaché au capteur de luminosité, gère le changement de couleur du fond.
+     */
     private SensorEventListener mLightSensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
@@ -107,11 +119,41 @@ public class MazeEngine {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
+    /**
+     * Récupère la Boule utilisée par le moteur physique
+     * @return Boule référence vers la boule utilisée par le moteur
+     */
+    public Boule getBoule() {
+        return mBoule;
+    }
+
+    /**
+     * Change la Boule utilisée par le moteur physique
+     * @param pBoule Nouvelle Boule
+     */
+    public void setBoule(Boule pBoule) {
+        this.mBoule = pBoule;
+    }
+
+    /**
+     * Calcule une couleur en fonction de la valeur du capteur et de sa valeur maximale
+     *
+     * @param value Valeur du capteur
+     * @param maxValue Valeur maximale du capteur
+     * @return float Valeur de couleur [0..255] de la composante
+     */
     private float sensorRangeToColorComponent(float value, float maxValue) {
         if(value > maxValue) value = maxValue;
         return (Math.abs(value)*255)/maxValue;
     }
 
+    /**
+     * Constructeur du moteur physique,
+     * initialise les capteurs.
+     *
+     * @param pView Référence vers l'activité appelante
+     * @param mazeView Référence vers le moteur graphique
+     */
     public MazeEngine(MainActivity pView, MazeView mazeView) {
         mActivity = pView;
         mViewEngine = mazeView;
@@ -121,26 +163,37 @@ public class MazeEngine {
         mLightSensor = mManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     }
 
-    // Remet à zéro l'emplacement de la boule
+    /**
+     * Remet à zéro l'emplacement de la boule
+     */
     public void reset() {
         mBoule.reset();
     }
 
-    // Arrête le capteur
+    /**
+     * Arrête les capteurs
+     */
     public void stop() {
         mManager.unregisterListener(mAccelerometerSensorEventListener, mAccelerometre);
         mManager.unregisterListener(mMagneticSensorEventListener, mMagneticSensor);
         mManager.unregisterListener(mLightSensorEventListener, mLightSensor);
     }
 
-    // Redémarre le capteur
+    /**
+     * Redémarre les capteurs
+     */
     public void resume() {
         mManager.registerListener(mAccelerometerSensorEventListener, mAccelerometre, SensorManager.SENSOR_DELAY_GAME);
         mManager.registerListener(mMagneticSensorEventListener, mMagneticSensor, SensorManager.SENSOR_DELAY_GAME);
         mManager.registerListener(mLightSensorEventListener, mLightSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
-    // Construit le labyrinthe
+    /**
+     * Construit le labyrinthe
+     *
+     * @param screenSizes Taille de l'écran
+     * @return List<Bloc> Blocs générés, correspond à la 'carte' du labyrinthe
+     */
     public List<Bloc> buildLabyrinthe(Point screenSizes) {
         // calculate screen sizes
         float tileSizeX = screenSizes.x / (float)20;

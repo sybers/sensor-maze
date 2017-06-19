@@ -15,36 +15,67 @@ import android.graphics.Paint;
 import fr.gramatiik.sensormaze.models.Bloc;
 import fr.gramatiik.sensormaze.models.Boule;
 
+/**
+ * Classe MazeView.
+ *
+ * Permet de gérér l'affichage des éléments du jeu SensorMaze
+ *
+ * @author Stanyslas Bres
+ */
 public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
     Boule mBoule;
-    public Boule getBoule() {
-        return mBoule;
-    }
-
-    public void setBoule(Boule pBoule) {
-        this.mBoule = pBoule;
-    }
-
     final SurfaceHolder mSurfaceHolder;
     DrawingThread mThread;
-
     private int mBackColor = Color.CYAN;
+    private List<Bloc> mBlocks = null;
+
+    /**
+     * Change la couleur de fond du labyrinthe
+     * @param color Nouvelle couleur
+     */
     public void setBGColor(int color) {
         mBackColor = color;
     }
 
-    private List<Bloc> mBlocks = null;
-
+    /**
+     * Retourne la liste des Blocs composant la 'carte' du labyrinthe
+     * @return
+     */
     public List<Bloc> getBlocks() {
         return mBlocks;
     }
 
+    /**
+     * Change la liste des Blocs composant la 'carte' du labyrinthe
+     * @param pBlocks
+     */
     public void setBlocks(List<Bloc> pBlocks) {
         this.mBlocks = pBlocks;
     }
 
+    /**
+     * Retourne la boule utilisée pour l'affichage
+     * @return
+     */
+    public Boule getBoule() {
+        return mBoule;
+    }
+
+    /**
+     * Change la boule utilisée pour l'affichage
+     * @param pBoule
+     */
+    public void setBoule(Boule pBoule) {
+        this.mBoule = pBoule;
+    }
+
     Paint mPaint;
 
+    /**
+     * Constructeur du moteur graphique
+     *
+     * @param pContext Contexte de l'application
+     */
     public MazeView(Context pContext) {
         super(pContext);
         mSurfaceHolder = getHolder();
@@ -57,6 +88,11 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
         mBoule = new Boule(20);
     }
 
+    /**
+     * On dessine le plateau de jeu lors de la mise à jour de l'affichage
+     *
+     * @param pCanvas Canvas utilisé pour l'affichage
+     */
     @Override
     protected void onDraw(Canvas pCanvas) {
         // Dessiner le fond de l'écran en premier
@@ -87,10 +123,12 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder pHolder, int pFormat, int pWidth, int pHeight) {
-        //
-    }
+    public void surfaceChanged(SurfaceHolder pHolder, int pFormat, int pWidth, int pHeight) {}
 
+    /**
+     * A la création de la surface, on initialise la boule
+     * @param pHolder
+     */
     @Override
     public void surfaceCreated(SurfaceHolder pHolder) {
         mThread.keepDrawing = true;
@@ -102,6 +140,11 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * On nettoie à la destruction de la surface
+     *
+     * @param pHolder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder pHolder) {
         mThread.keepDrawing = false;
@@ -117,6 +160,9 @@ public class MazeView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    /**
+     * Class Thread utilisée pour le dessin
+     */
     private class DrawingThread extends Thread {
         boolean keepDrawing = true;
 
